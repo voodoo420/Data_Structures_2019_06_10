@@ -1,7 +1,6 @@
 package ru.geelbrains.datastructure.array;
 
 import java.util.Arrays;
-import java.util.concurrent.TimeUnit;
 
 public class ArrayImpl<E extends Object & Comparable<? super E>> implements Array<E> {
 
@@ -13,6 +12,12 @@ public class ArrayImpl<E extends Object & Comparable<? super E>> implements Arra
     public ArrayImpl() {
         this(INITIAL_CAPACITY);
     }
+
+    private ArrayImpl(E[] data, int size) {
+        this.data = data;
+        this.size = size;
+    }
+
 
     @SuppressWarnings("unchecked")
     public ArrayImpl(int initialCapacity) {
@@ -141,5 +146,8 @@ public class ArrayImpl<E extends Object & Comparable<? super E>> implements Arra
         }
     }
 
-
+    @Override
+    public Array copy() {
+        return new ArrayImpl<>(Arrays.copyOf(data, size), size);
+    }
 }

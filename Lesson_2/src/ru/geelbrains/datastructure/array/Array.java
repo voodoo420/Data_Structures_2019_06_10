@@ -23,6 +23,8 @@ public interface Array<E> {
     void sortSelect();
     void sortInsert();
 
+    Array copy();
+
 
 
 }

@@ -6,6 +6,9 @@ public class SortedArrayImpl<E extends Object & Comparable<? super E>> extends A
         super(initialCapacity);
     }
 
+    public SortedArrayImpl() {
+    }
+
     @Override//O(logN)
     public int indexOf(E value) {
         int low = 0;
