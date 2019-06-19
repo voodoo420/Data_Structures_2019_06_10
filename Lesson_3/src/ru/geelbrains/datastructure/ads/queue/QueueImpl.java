@@ -9,8 +9,8 @@ public class QueueImpl<E> implements Queue<E> {
 
     protected int size;
 
-    private int tail;
-    private int head;
+    protected int tail;
+    protected int head;
 
     @SuppressWarnings("unchecked")
     public QueueImpl(int maxSize) {
