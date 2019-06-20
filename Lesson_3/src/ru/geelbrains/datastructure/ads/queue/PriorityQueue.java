@@ -7,14 +7,8 @@ public class PriorityQueue<E extends Object & Comparable<? super  E>> extends Qu
     }
 
     @Override//O(N)
-    public boolean insert(E value) {
-        if (isFull()) {
-            return false;
-        }
-        if (isEmpty()) {
-            data[size++] = value;
-            return true;
-        }
+    public boolean insert(E value) { if (isFull()) { return false; } if (isEmpty()) { data[size++] = value; return true; }
+
 
         int index;
         for (index = size - 1; index >= 0; index--) {
