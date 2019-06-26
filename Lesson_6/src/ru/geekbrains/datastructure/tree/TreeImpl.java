@@ -7,6 +7,16 @@ public class TreeImpl<E extends Comparable<? super E>> implements Tree<E> {
     private Node<E> root;
     private int size;
 
+    private int maxLevel;
+
+    public TreeImpl() {
+        this(0);
+    }
+
+    public TreeImpl(int maxLevel) {
+        this.maxLevel = maxLevel;
+    }
+
     @Override
     public boolean add(E value) {
         Node<E> newNode = new Node<>(value);
@@ -21,8 +31,14 @@ public class TreeImpl<E extends Comparable<? super E>> implements Tree<E> {
         }
 
         Node<E> parent = nodeAndParent.parent;
-
         assert parent != null;
+
+        int level = parent.getLevel() + 1;
+        if (level > maxLevel) {
+            return false;
+        }
+
+
         if (parent.shouldBeLeft(value)) {
             parent.setLeftChild(newNode);
         } else {
@@ -42,7 +58,13 @@ public class TreeImpl<E extends Comparable<? super E>> implements Tree<E> {
         Node<E> parent = null;
         Node<E> current = this.root;
 
+        current.setLevel(1);
+
         while (current != null) {
+            if (parent != null) {
+                current.setLevel(parent.getLevel() + 1);
+            }
+
             if (current.getValue().equals(value)) {
                 return new NodeAndParent(current, parent);
             }
@@ -248,6 +270,22 @@ public class TreeImpl<E extends Comparable<? super E>> implements Tree<E> {
             nBlanks /= 2;
         }
         System.out.println("................................................................");
+    }
+
+    @Override
+    public boolean isBalanced() {
+        return isBalanced(root);
+    }
+
+    private boolean isBalanced(Node node) {
+        return (node == null) ||
+                isBalanced(node.getLeftChild()) &&
+                        isBalanced(node.getRightChild()) &&
+                        Math.abs(height(node.getLeftChild()) - height(node.getRightChild())) <= 1;
+    }
+
+    private int height(Node node) {
+        return node == null ? 0 : 1 + Math.max(height(node.getLeftChild()), height(node.getRightChild()));
     }
 
     private class NodeAndParent {
