@@ -25,7 +25,7 @@ public class Graph {
     }
 
     public boolean isEmpty() {
-        return  getSize() == 0;
+        return getSize() == 0;
     }
 
     public void addEdges(String start, String second, String... others) {
@@ -36,7 +36,7 @@ public class Graph {
     }
 
     public void addEdge(String start, String finish) {
-        int startIndex =  indexOf(start);
+        int startIndex = indexOf(start);
         int finishIndex = indexOf(finish);
 
         if (startIndex == -1 || finishIndex == -1) {
@@ -74,6 +74,7 @@ public class Graph {
 
     /**
      * англ. Depth-first search, DFS
+     *
      * @param startLabel
      */
     public void dfs(String startLabel) {
@@ -87,12 +88,11 @@ public class Graph {
         Vertex vertex = vertexList.get(startIndex);
         visitVertex(stack, vertex);
 
-        while ( !stack.isEmpty() ) {
+        while (!stack.isEmpty()) {
             vertex = getNearUnvisitedVertex(stack.peek());
             if (vertex != null) {
                 visitVertex(stack, vertex);
-            }
-            else {
+            } else {
                 stack.pop();
             }
         }
@@ -102,6 +102,7 @@ public class Graph {
 
     /**
      * англ. breadth-first search, BFS
+     *
      * @param startLabel
      */
     public void bfs(String startLabel) {
@@ -114,12 +115,11 @@ public class Graph {
         Vertex vertex = vertexList.get(startIndex);
         visitVertex(queue, vertex);
 
-        while ( !queue.isEmpty() ) {
+        while (!queue.isEmpty()) {
             vertex = getNearUnvisitedVertex(queue.peek());
             if (vertex != null) {
                 visitVertex(queue, vertex);
-            }
-            else {
+            } else {
                 queue.remove();
             }
         }
@@ -155,6 +155,49 @@ public class Graph {
         displayVertex(vertex);
         queue.add(vertex);
         vertex.setVisited(true);
+    }
+
+    public Stack<String> findShortPathViaBfs(String startLabel, String finishLabel) {
+        int startIndex = indexOf(startLabel);
+        int finishIndex = indexOf(finishLabel);
+        if (startIndex == -1) {
+            throw new IllegalArgumentException("Invalid startLabel: " + startLabel);
+        }
+        if (finishIndex == -1) {
+            throw new IllegalArgumentException("Invalid finishLabel: " + finishLabel);
+        }
+
+        Queue<Vertex> queue = new ArrayDeque<>();
+
+        Vertex vertex = vertexList.get(startIndex);
+        visitVertex(queue, vertex);
+
+        while (!queue.isEmpty()) {
+            vertex = getNearUnvisitedVertex(queue.peek());
+            if (vertex == null) {
+                queue.remove();
+            } else {
+                visitVertex(queue, vertex);
+                vertex.setPreviousVertex(queue.peek());
+                if (vertex.getLabel().equals(finishLabel)) {
+                    return buildPath(vertex);
+                }
+            }
+        }
+
+        resetVertexState();
+        return null;
+    }
+
+    private Stack<String> buildPath(Vertex vertex) {
+        Stack<String> stack = new Stack<>();
+        Vertex current = vertex;
+        while (current != null) {
+            stack.push(current.getLabel());
+            current = current.getPreviousVertex();
+        }
+
+        return stack;
     }
 
 }
