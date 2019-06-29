@@ -128,6 +128,39 @@ public class Graph {
 
     }
 
+    public ArrayList<String> bestPath(String start, String finish){
+        int startIndex = indexOf(start);
+        int finishIndex = indexOf(finish);
+        if (startIndex == -1 || finishIndex == -1 ) {
+            throw new IllegalArgumentException("Invalid input data");
+        }
+        Queue<Vertex> queue = new LinkedList<>();
+        Vertex vertex = vertexList.get(startIndex);
+        visitVertexWithoutDisplay(queue, vertex);
+        while (!queue.isEmpty()) {
+            vertex = getNearUnvisitedVertex(queue.peek());
+            if (vertex != null) {
+                visitVertexWithoutDisplay(queue, vertex);
+                vertex.setPrevious(queue.peek());
+                if (vertex.getLabel().equals(finish)){
+                    ArrayList<String> list = new ArrayList<>();
+                    Vertex current = vertex;
+                    while (current != null) {
+                        list.add(current.getLabel());
+                        current = current.getPrevious();
+                    }
+                    Collections.reverse(list);
+                    return list;
+                }
+            }
+            else {
+                queue.remove();
+            }
+        }
+        resetVertexState();
+        return null;
+    }
+
     private void resetVertexState() {
         for (int i = 0; i < size; i++) {
             vertexList.get(i).setVisited(false);
@@ -141,7 +174,6 @@ public class Graph {
                 return vertexList.get(i);
             }
         }
-
         return null;
     }
 
@@ -153,6 +185,11 @@ public class Graph {
 
     private void visitVertex(Queue<Vertex> queue, Vertex vertex) {
         displayVertex(vertex);
+        queue.add(vertex);
+        vertex.setVisited(true);
+    }
+
+    private void visitVertexWithoutDisplay(Queue<Vertex> queue, Vertex vertex) {
         queue.add(vertex);
         vertex.setVisited(true);
     }
