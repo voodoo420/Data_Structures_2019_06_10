@@ -1,4 +1,4 @@
-package ru.geekbrains.datastructure.graph;
+package ru.geekbrains.datastructure.graph.MyHW;
 
 import java.util.Objects;
 
@@ -6,9 +6,7 @@ public class Vertex {
 
     private final String label;
     private boolean visited;
-
-    private Vertex previousVertex;
-
+    private Vertex previous;
 
     public Vertex(String label) {
         this.label = label;
@@ -46,11 +44,13 @@ public class Vertex {
         this.visited = visited;
     }
 
-    public Vertex getPreviousVertex() {
-        return previousVertex;
+    public Vertex getPrevious() {
+        return previous;
     }
 
-    public void setPreviousVertex(Vertex previousVertex) {
-        this.previousVertex = previousVertex;
+    public void setPrevious(Vertex previous) {
+        this.previous = previous;
     }
+
+
 }

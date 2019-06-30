@@ -1,5 +1,7 @@
 package ru.geekbrains.datastructure.graph;
 
+import ru.geekbrains.datastructure.graph.MyHW.Graph;
+
 public class Main7 {
 
     public static void main(String[] args) {
